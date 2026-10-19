@@ -87,11 +87,31 @@ footer {
 .features b { display: block; }
 .features span.t { color: var(--muted); font-size: 15px; }
 
-.gallery { display: flex; gap: 14px; overflow-x: auto; padding: 4px 2px 14px; scroll-snap-type: x mandatory; }
-.gallery img { height: 420px; width: auto; border-radius: 18px; border: 1px solid var(--line); scroll-snap-align: start; flex: none; background: var(--card); }
-.gallery.fields img { height: 170px; border-radius: 16px; }
-.gallery figure { margin: 0; flex: none; scroll-snap-align: start; text-align: center; }
-.gallery figcaption { font-size: 14px; color: var(--muted); margin-top: 6px; font-weight: 600; }
+.gallery { --cols: 4; --gap: 14px; display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: var(--gap); }
+.gallery img { flex: none; width: calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols)); }
+.gallery img {
+  display: block; height: auto; cursor: zoom-in;
+  border-radius: 16px; border: 1px solid var(--line); background: var(--card);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.gallery img:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(40, 30, 110, .18); }
+
+/* full-screen viewer */
+.lightbox {
+  position: fixed; inset: 0; z-index: 50; display: none; align-items: center; justify-content: center;
+  background: rgba(10, 8, 25, .88); padding: 24px 64px;
+}
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 100%; max-height: 100%; border-radius: 18px; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+.lightbox button {
+  position: absolute; border: 0; cursor: pointer; color: #fff; background: rgba(255,255,255,.14);
+  width: 48px; height: 48px; border-radius: 50%; font-size: 26px; line-height: 48px; padding: 0;
+}
+.lightbox button:hover { background: rgba(255,255,255,.26); }
+.lightbox .close { top: 16px; right: 16px; }
+.lightbox .prev { left: 12px; top: 50%; transform: translateY(-50%); }
+.lightbox .next { right: 12px; top: 50%; transform: translateY(-50%); }
+.lightbox .count { position: absolute; bottom: 16px; left: 0; right: 0; text-align: center; color: #fff; opacity: .8; font-size: 14px; }
 .placeholder {
   border: 2px dashed var(--line); border-radius: 18px; padding: 28px; text-align: center; color: var(--muted);
 }
@@ -109,7 +129,9 @@ footer {
 
 @media (max-width: 560px) {
   .topbar nav { gap: 12px; }
-  .gallery img { height: 340px; }
+  .gallery { --cols: 2 !important; --gap: 10px; }
+  .lightbox { padding: 16px 8px 64px; }
+  .lightbox .prev, .lightbox .next { top: auto; bottom: 10px; transform: none; }
   .app-hero .icon { width: 88px; height: 88px; border-radius: 22px; }
 }
 
